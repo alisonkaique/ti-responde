@@ -1,0 +1,25 @@
+<div class="po-wrapper">
+  <po-page-default
+    p-title="Tabela Editável"
+    [p-actions]="pageActions">
+    <po-table
+      class="po-lg-12"
+      [p-columns]="columns"
+      [p-items]="items"
+      [p-hide-columns-manager]="true"
+      (p-show-more)="showMore()"
+      [p-show-more-disabled]="!hasNext"
+      [p-height]="600">
+      <ng-template p-table-cell-template let-column="column" let-row="row">
+        @if(column.property === 'bm_desc') {
+          <po-input [(ngModel)]="row.bm_desc" [p-maxlength]="30"></po-input>
+        }
+      </ng-template>
+    </po-table>
+
+    @if (isLoading) {
+      <po-loading-overlay>
+      </po-loading-overlay>
+    }
+  </po-page-default>
+</div>
