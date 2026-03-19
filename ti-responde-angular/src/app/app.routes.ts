@@ -8,5 +8,9 @@ export const routes: Routes = [
   {
     path: 'editable-table',
     loadComponent: () => import('./shared/components/editable-table/editable-table').then(m => m.EditableTable)
+  },
+  {
+    path: 'triggers',
+    loadComponent: () => import('./shared/components/triggers/triggers').then(m => m.Triggers)
   }
 ];

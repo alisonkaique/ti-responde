@@ -24,5 +24,6 @@ export class App {
   readonly menus: PoMenuItem[] = [
     { label: 'Home', icon: 'an an-grid-nine', link: '/' },
     { label: 'Tabela Editável', icon: 'an an-house', link: '/editable-table' },
+    { label: 'Gatilhos', icon: 'an an-arrow-line-up-right', link: '/triggers' },
   ];
 }

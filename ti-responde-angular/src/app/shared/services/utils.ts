@@ -28,4 +28,8 @@ export class Utils {
   postProductGroups(body: any): Observable<any> {
     return this.http.post(`${BASE_URL}/custom/ti/responde/sbm`, body, this.httpOptions);
   }
+
+  getProductInfo(productId: string): Observable<any> {
+    return this.http.get<any>(`${BASE_URL}/api/framework/v1/genericList?alias=SB1&fields=b1_cod,b1_desc,b1_tipo&order=b1_desc&page=1&pageSize=1&filter=b1_cod eq '${productId}'`, this.httpOptions);
+  }
 }
