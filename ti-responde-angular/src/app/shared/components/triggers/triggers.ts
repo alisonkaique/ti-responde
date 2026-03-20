@@ -89,7 +89,7 @@ export class Triggers implements OnInit {
       this.utilsService.getProductInfo(changedValues.value.b1_cod).subscribe({
         next: (response) => {
           if (response.items.length > 0) {
-            changedValues.value.b1_desc = response.items[0].b1_cod;
+            changedValues.value.b1_desc = response.items[0].b1_desc;
             changedValues.value.b1_tipo = response.items[0].b1_tipo;
           } else {
             changedValues.value.b1_desc = '';
@@ -108,6 +108,10 @@ export class Triggers implements OnInit {
           this.notificationService.error({
             message: 'Erro ao buscar informações, favor verificar o log de erros'
           })
+
+          changedValues.value.b1_desc = '';
+          changedValues.value.b1_tipo = '';
+          changedValues.value.b1_cod = '';
 
           this.isLoading = false;
         }
