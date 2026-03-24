@@ -1,0 +1,17 @@
+<div class="po-wrapper">
+  <po-page-default
+    p-title="Gatilhos">
+    <po-dynamic-form
+      [p-fields]="dynamicFields"
+      [p-value]="dynamicValues"
+      [p-validate]="onFieldValidation.bind(this)">
+    </po-dynamic-form>
+
+    @if(isLoading) {
+      <po-loading-overlay
+        p-text="Buscando Informações"
+        [p-screen-lock]="true">
+      </po-loading-overlay>
+    }
+  </po-page-default>
+</div>
