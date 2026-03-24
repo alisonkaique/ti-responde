@@ -1,0 +1,23 @@
+<div class="po-wrapper">
+  <po-page-default
+    p-title="Auto Complete">
+    <po-container
+      p-title="Utilizando Dynamic Form">
+      <po-dynamic-form
+        [p-fields]="dynamicFields"
+        [p-value]="dynamicValues"
+        [p-validate]="onFieldValidation.bind(this)">
+      </po-dynamic-form>
+    </po-container>
+    <po-container
+      p-title="Utilizando Reactive Form">
+      <po-input
+        class="po-lg-6"
+        p-label="Código"
+        name="code"
+        [(ngModel)]="code"
+        (p-change)="onChange()">
+      </po-input>
+    </po-container>
+  </po-page-default>
+</div>
