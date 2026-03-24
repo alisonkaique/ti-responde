@@ -25,5 +25,6 @@ export class App {
     { label: 'Home', icon: 'an an-grid-nine', link: '/' },
     { label: 'Tabela Editável', icon: 'an an-house', link: '/editable-table' },
     { label: 'Gatilhos', icon: 'an an-arrow-line-up-right', link: '/triggers' },
+    { label: 'Consulta Padrão', icon: 'an an-magnifying-glass', link: '/lookup' },
   ];
 }

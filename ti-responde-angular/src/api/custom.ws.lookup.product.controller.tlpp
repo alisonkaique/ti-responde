@@ -1,0 +1,31 @@
+#include 'tlpp-core.th'
+
+namespace product.ws
+
+@get( endpoint='/custom/api/v1/product/lookup', description='API para buscar dados de Produtos' )
+user function getProductionAnnotation()
+	local oAdapter := LookupAdapter():new( oRest:getQueryRequest(), JsonObject():new() ) as object
+	local jResponse as json
+
+	oRest:setKeyHeaderResponse("Content-Type", "application/json")
+
+	jResponse := oAdapter:getData()
+
+	oRest:setResponse( jResponse:toJson() )
+
+	freeObj( jResponse )
+return
+
+	@get( endpoint='/custom/api/v1/product/lookup/:id', description='API para buscar dados de Produtos pelo ID' )
+user function getProductionAnnotationById()
+	local oAdapter := LookupAdapter():new( oRest:getQueryRequest(), oRest:getPathParamsRequest() ) as object
+	local jResponse as json
+
+	oRest:setKeyHeaderResponse("Content-Type", "application/json")
+
+	jResponse := oAdapter:getData()
+
+	oRest:setResponse( jResponse:toJson() )
+
+	freeObj( jResponse )
+return

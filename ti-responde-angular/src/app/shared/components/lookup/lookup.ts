@@ -1,20 +1,20 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { PoDynamicFormField, PoDynamicFormFieldChanged, PoDynamicModule, PoLoadingModule, PoNotificationService, PoPageModule, PoSelectOption } from '@po-ui/ng-components';
-import { Utils } from './../../services/utils';
+import { Component } from '@angular/core';
+import { PoContainerModule, PoDynamicFormField, PoDynamicFormFieldChanged, PoDynamicModule, PoFieldModule, PoLoadingModule, PoLookupColumn, PoNotificationService, PoPageModule, PoSelectOption } from '@po-ui/ng-components';
+import { Utils } from '../../services/utils';
 
 @Component({
-  selector: 'app-triggers',
+  selector: 'app-lookup',
   imports: [
-    CommonModule,
     PoPageModule,
     PoDynamicModule,
-    PoLoadingModule
+    PoLoadingModule,
+    PoContainerModule,
+    PoFieldModule
   ],
-  templateUrl: './triggers.html',
-  styleUrl: './triggers.css',
+  templateUrl: './lookup.html',
+  styleUrl: './lookup.css',
 })
-export class Triggers implements OnInit {
+export class Lookup {
   readonly typeOptions: PoSelectOption[] = [
     { value: "AI", label: "AI - ATIVO IMOBILIZADO" },
     { value: "BN", label: "BN - BENEFICIAMENTO" },
@@ -42,12 +42,36 @@ export class Triggers implements OnInit {
     { value: "SP", label: "SP - SUBPRODUTO" },
   ];
 
+  readonly lookupColumns: PoLookupColumn[] = [
+    {
+      property: 'b1_cod',
+      label: 'Código'
+    },
+    {
+      property: 'b1_desc',
+      label: 'Descrição'
+    },
+    {
+      property: 'b1_tipo',
+      label: 'Tipo'
+    },
+    {
+      property: 'b1_um',
+      label: 'Unidade Medida'
+    }
+  ];
+
   readonly dynamicFields: PoDynamicFormField[] = [
     {
       property: 'b1_cod',
       label: 'Código',
       required: true,
-      showRequired: true
+      showRequired: true,
+      searchService: 'http://localhost:9090/rest99/custom/api/v1/product/lookup',
+      columns: this.lookupColumns,
+      fieldValue: 'b1_cod',
+      format: [ 'b1_cod', 'b1_desc' ],
+      gridColumns: 12
     },
     {
       property: 'b1_desc',
@@ -59,7 +83,8 @@ export class Triggers implements OnInit {
       property: 'b1_tipo',
       label: 'Tipo',
       disabled: true,
-      options: this.typeOptions
+      options: this.typeOptions,
+      gridColumns: 6
     }
   ];
 
@@ -119,5 +144,11 @@ export class Triggers implements OnInit {
     }
 
     return changedValues;
+  }
+
+  onLookupChange(value: any): void {
+    this.notificationService.information({
+      message: `Valor do Lookup: ${value}`
+    });
   }
 }

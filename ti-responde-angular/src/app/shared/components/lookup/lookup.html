@@ -1,0 +1,32 @@
+<div class="po-wrapper">
+  <po-page-default
+    p-title="Consulta Padrão">
+    <po-container
+      p-title="Utilizando Dynamic Form">
+      <po-dynamic-form
+        [p-fields]="dynamicFields"
+        [p-value]="dynamicValues"
+        [p-validate]="onFieldValidation.bind(this)">
+      </po-dynamic-form>
+    </po-container>
+
+    <po-container
+      p-title="Utilizando po-lookup">
+      <po-lookup
+      name="lookup"
+      p-field-label="label"
+      p-field-value="value"
+      p-filter-service="https://po-sample-api.onrender.com/v1/heroes"
+      p-label="PO Lookup"
+      (p-change)="onLookupChange($event)">
+</po-lookup>
+    </po-container>
+
+    @if(isLoading) {
+      <po-loading-overlay
+        p-text="Buscando Informações"
+        [p-screen-lock]="true">
+      </po-loading-overlay>
+    }
+  </po-page-default>
+</div>
