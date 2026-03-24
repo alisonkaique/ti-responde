@@ -1,0 +1,26 @@
+#include 'tlpp-core.th'
+
+namespace ti.responde
+
+@post( endpoint='/custom/ti/responde/sbm', description='API para atualização da SBM' )
+user function postSBM()
+	local cBody := oRest:getBodyRequest() as character
+	local jBody := JsonObject():new()           as json
+	local nIndex                                as numeric
+	local nCount                                as numeric
+
+	jBody:fromJson( cBody )
+
+	SBM->( dbSetOrder( 01 ) ) // BM_FILIAL + BM_GRUPO
+
+	nCount := len( jBody[ 'items' ] )
+
+	for nIndex := 01 to nCount
+		if ( SBM->( dbSeek( FWxFilial( 'SBM' ) + avKey( jBody[ 'items' ][ nIndex ][ 'bm_grupo' ], 'BM_GRUPO' ) ) ) )
+			if ( recLock( 'SBM', .F. ) )
+				SBM->BM_DESC := avKey( jBody[ 'items' ][ nIndex ][ 'bm_desc' ], 'BM_DESC' )
+				SBM->( msUnlock() )
+			endIf
+		endIf
+	next nIndex
+return

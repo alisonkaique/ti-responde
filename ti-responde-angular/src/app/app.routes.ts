@@ -16,5 +16,9 @@ export const routes: Routes = [
   {
     path: 'lookup',
     loadComponent: () => import('./shared/components/lookup/lookup').then(m => m.Lookup)
+  },
+  {
+    path: 'autocomplete',
+    loadComponent: () => import('./shared/components/autocomplete/autocomplete').then(m => m.Autocomplete)
   }
 ];
