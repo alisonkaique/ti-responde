@@ -1,0 +1,152 @@
+#include 'tlpp-core.th'
+
+namespace product.ws
+
+/*/{Protheus.doc} LookupAdapter
+  Classe para Adapter de Lookup
+  @author Alison Kaique | Spirit Fire Innovation
+  @since Mar|2026
+  @version 1.0
+/*/
+class LookupAdapter from FWAdapterBaseV2
+	private data cFilter   as character
+	private data cId       as character
+	private data cAlias    as character
+	private data nPage     as numeric
+	private data nPageSize as numeric
+
+	public method new()     as object
+	public method getData() as json
+
+	private method setLookupQuery()
+	private method setLookupWhere()
+	private method mapLookupFields()
+endClass
+
+/*/{Protheus.doc} LookupAdapter::new
+  Método construtor da classe
+  @author Alison Kaique | Spirit Fire Innovation
+  @since Mar|2026
+  @version 1.0
+
+  @param jQueryParams, json  , query params da requisição
+  @param jPathParams , json  , path params da requisição
+
+  @return self       , object, instância ativa da classe
+/*/
+method new( jQueryParams as json, jPathParams as json ) as object class LookupAdapter
+	_Super:new( 'GET' )
+
+	self:cFilter   := iIf( jQueryParams:hasProperty( 'filter' )  , jQueryParams[ 'filter' ]         , '' )
+	self:cId       := iIf( jPathParams:hasProperty( 'id' )       , jPathParams[ 'id' ]              , '' )
+	self:cAlias    := 'SB1'
+	self:nPage     := iIf( jQueryParams:hasProperty( 'page' )    , val( jQueryParams[ 'page' ] )    , 01 )
+	self:nPageSize := iIf( jQueryParams:hasProperty( 'pageSize' ), val( jQueryParams[ 'pageSize' ] ), 10 )
+return self
+
+/*/{Protheus.doc} LookupAdapter::getData
+  Método para obter dados de ordens de produção
+  @author Alison Kaique | Spirit Fire Innovation
+  @since Mar|2026
+  @version 1.0
+
+  @return jResponse, json, resposta da requisição
+/*/
+method getData() as json class LookupAdapter
+	local jResponse := JsonObject():new() as json
+	local cResponse as character
+
+	self:setLookupQuery()
+	self:setLookupWhere()
+	self:mapLookupFields()
+
+	self:setOrderQuery( 'B1_COD' )
+
+	self:setPage( self:nPage )
+	self:setPageSize( self:nPageSize )
+
+	if ( self:execute() )
+		self:fillGetResponse()
+
+		cResponse := self:getJsonResponse()
+		jResponse:fromJson( cResponse )
+
+		if ( !empty( self:cId ) .AND. jResponse:hasProperty( 'items' ) .AND. len( jResponse[ 'items' ] ) > 01 )
+			aSize( jResponse[ 'items' ], 01 )
+		endIf
+	else
+		setRestFault( self:getCode(), self:getMessage() )
+	endIf
+return jResponse
+
+/*/{Protheus.doc} LookupAdapter::setLookupQuery
+  Método para definição da consulta SQL
+  @author Alison Kaique | Spirit Fire Innovation
+  @since Mar|2026
+  @version 1.0
+/*/
+method setLookupQuery() class LookupAdapter
+	local cQuery as character
+
+	cQuery := " SELECT "
+	cQuery += "   #QueryFields# "
+	cQuery += " FROM "
+	cQuery += "   " + retSQLName( self:cAlias ) + " " + self:cAlias + " "
+	cQuery += " WHERE "
+	cQuery += "   #QueryWhere# "
+
+	self:setQuery( cQuery )
+return
+
+/*/{Protheus.doc} LookupAdapter::setLookupWhere
+  Método para definição da cláusula WHERE da consulta SQL
+  @author Alison Kaique | Spirit Fire Innovation
+  @since Mar|2026
+  @version 1.0
+/*/
+method setLookupWhere() class LookupAdapter
+	local cWhere as character
+	local cFilter := self:cFilter as character
+	local cId     := self:cId     as character
+	local cPrefix := iIf( left( self:cAlias, 01 ) == 'S', subStr( self:cAlias, 02, 03), self:cAlias ) as character
+	local cProductionId as character
+	local cItem         as character
+	local cSequence     as character
+
+	cWhere := " " + self:cAlias + "." + cPrefix + "_FILIAL = '" + FWxFilial( self:cAlias ) + "' "
+	cWhere += " AND " + self:cAlias + ".D_E_L_E_T_ = ' ' "
+
+	if ( !empty( cFilter ) )
+		cWhere += " AND ( SB1.B1_COD LIKE '%" + self:cFilter + "%' OR SB1.B1_DESC LIKE '%" + self:cFilter + "%' ) "
+	endIf
+
+	if ( !empty( cId ) )
+		cWhere += " AND SB1.B1_COD = '" + self:cId + "' "
+	endIf
+
+	self:setWhere( cWhere )
+return
+
+/*/{Protheus.doc} LookupAdapter::mapLookupFields
+  Método para definição dos campoos
+  @author Alison Kaique | Spirit Fire Innovation
+  @since Mar|2026
+  @version 1.0
+/*/
+method mapLookupFields() class LookupAdapter
+	local aFields as array
+	local aStruct as array
+	local nIndex  as numeric
+	local nCount  as numeric
+
+	aFields := { 'B1_COD', 'B1_DESC', 'B1_TIPO', 'B1_UM' }
+
+	nCount := len( aFields )
+
+	for nIndex := 01 to nCount
+		aStruct       := FWSX3Util():getFieldStruct( aFields[ nIndex ] )
+		aStruct[ 01 ] := allTrim( aStruct[ 01 ] )
+
+		self:addMapFields( aStruct[ 01 ], aStruct[ 01 ], .T., .T., { aStruct[ 01 ], aStruct[ 02 ], aStruct[ 03 ], aStruct[ 04] } )
+	next nIndex
+return
