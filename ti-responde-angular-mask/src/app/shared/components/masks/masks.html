@@ -1,0 +1,69 @@
+<div class="po-wrapper">
+  <po-page-default
+    p-title="Máscaras">
+    <po-container
+      p-title="Utilizando Dynamic Form">
+      <po-dynamic-form
+        [p-fields]="dynamicFields"
+        [p-value]="dynamicValues">
+      </po-dynamic-form>
+    </po-container>
+    <po-container
+      p-title="Utilizando Reactive Form">
+      <po-input
+        class="po-lg-6"
+        p-label="CPF"
+        name="cpf"
+        [(ngModel)]="cpf"
+        [p-maxlength]="11"
+        [p-minlength]="0"
+        p-mask="999.999.999-99"
+        p-pattern="([0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9])"
+        [p-mask-no-length-validation]="true">
+      </po-input>
+      <po-input
+        class="po-lg-6"
+        p-label="CNPJ"
+        name="cnpj"
+        [(ngModel)]="cnpj"
+        [p-maxlength]="14"
+        [p-minlength]="0"
+        p-mask="99.999.999/9999-99"
+        p-pattern="([0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9])"
+        [p-mask-no-length-validation]="true">
+      </po-input>
+      <po-input
+        class="po-lg-6"
+        p-label="Telefone Celular"
+        name="mobilePhone"
+        [(ngModel)]="mobilePhone"
+        [p-maxlength]="11"
+        [p-minlength]="0"
+        p-mask="(99) 9 9999-9999"
+        p-pattern="([0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9])"
+        [p-mask-no-length-validation]="true">
+      </po-input>
+      <po-decimal
+        class="po-lg-6"
+        p-label="Numérico sem Casas Decimais"
+        name="numberValue"
+        [(ngModel)]="numberValue"
+        [p-decimals-length]="0">
+      </po-decimal>
+      <po-decimal
+        class="po-lg-6"
+        p-label="Numérico com Casas Decimais"
+        name="decimalValue"
+        [(ngModel)]="decimalValue"
+        [p-decimals-length]="4">
+      </po-decimal>
+      <po-decimal
+        class="po-lg-6"
+        p-label="Valor Monetário"
+        name="decimalValue"
+        [(ngModel)]="currencyValue"
+        [p-decimals-length]="2">
+      </po-decimal>
+    </po-container>
+  </po-page-default>
+</div>
