@@ -1,0 +1,75 @@
+<po-page-default p-title="Dashboard Operacional">
+
+    <div class="po-row">
+
+        <po-widget class="po-md-4" p-title="Status do Sistema" [p-actions]="myActions">
+            <div class="po-font-subtitle po-text-center po-py-4">
+                <span class="po-icon ph ph-check-circle po-text-color-success"></span>
+                Sistema Operacional
+            </div>
+
+            <div class="po-row po-mt-2">
+                <po-button class="po-md-12" p-label="Ajuda" p-icon="ph ph-question" p-kind="secondary"
+                    (p-click)="modalHelp.open()">
+                </po-button>
+            </div>
+        </po-widget>
+
+        <po-widget class="po-md-4" p-title="Saúde da API">
+
+            <div class="po-row">
+                <po-select class="po-md-12 po-mb-2" name="selectAmbiente" p-label="Ambiente"
+                    [p-options]="opcoesAmbiente" [ngModel]="ambienteSelecionado">
+                </po-select>
+            </div>
+
+            <div class="po-font-header-xl po-text-center">
+                45 <span class="po-font-text">ms</span>
+            </div>
+
+            <div class="po-text-center po-text-color-success po-mb-2">
+                Latência Estável
+            </div>
+
+            <div class="po-row">
+                <po-button class="po-md-12" p-label="Testar Conexão" p-icon="ph ph-plugs" [p-loading]="isTesting"
+                    (p-click)="testarApi()">
+                </po-button>
+            </div>
+        </po-widget>
+
+        <po-widget class="po-md-4" p-title="Integração Protheus">
+            <div class="po-font-header-xl po-text-center po-pt-2 po-text-color-warning">
+                12
+            </div>
+            <div class="po-text-center po-mb-2">
+                Pendências de Envio
+            </div>
+
+            <div class="po-row">
+                <po-button class="po-md-12" p-label="Sincronizar" p-icon="ph ph-arrows-counter-clockwise"
+                    p-kind="primary" [p-loading]="isSyncing" (p-click)="sincronizar()">
+                </po-button>
+            </div>
+        </po-widget>
+
+    </div>
+
+    <po-modal #modalHelp p-title="Sobre o Sistema" [p-primary-action]="closeAction">
+
+        <div class="po-row">
+            <po-info class="po-md-6" p-label="Desenvolvido por" [p-value]="systemInfo.developer"></po-info>
+            <po-info class="po-md-6" p-label="Versão" [p-value]="systemInfo.version"></po-info>
+        </div>
+
+        <div class="po-row po-mt-2">
+            <po-info class="po-md-12" p-label="Última Atualização (Build)" [p-value]="systemInfo.buildDate"></po-info>
+        </div>
+
+        <div class="po-row po-mt-2">
+            <po-info class="po-md-12" p-label="E-mail de Suporte" [p-value]="systemInfo.supportEmail"></po-info>
+        </div>
+
+    </po-modal>
+
+</po-page-default>

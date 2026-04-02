@@ -1,0 +1,38 @@
+<po-page-default p-title="Dados de Conexão Protheus">
+
+    <po-divider p-label="Identificação da Sessão"></po-divider>
+
+    <div class="po-row">
+        <po-info 
+            class="po-md-6" 
+            p-label="Empresa (ProCompany)"
+            [p-value]="proCompany">
+        </po-info>
+
+        <po-info 
+            class="po-md-6" 
+            p-label="Filial (ProBranch)"
+            [p-value]="proBranch">
+        </po-info>
+    </div>
+
+    <po-divider p-label="Segurança"></po-divider>
+
+    <div class="po-row">
+        <po-info 
+            class="po-md-12 po-mb-1" 
+            p-label="Status do Token"
+            [p-value]="erpToken ? 'Token Ativo' : 'Sessão Expirada'">
+        </po-info>
+
+        <po-textarea 
+            class="po-md-12" 
+            name="token" 
+            p-label="Access Token" 
+            [(ngModel)]="erpToken" 
+            [p-readonly]="true"
+            [p-rows]="4">
+        </po-textarea>
+    </div>
+
+</po-page-default>
